@@ -14,6 +14,7 @@ const createCustomElement = (element, className, innerText) => {
 
 const createProductItemElement = ({ sku, name, image }) => {
   const section = document.createElement('section');
+  
   section.className = 'item';
 
   section.appendChild(createCustomElement('span', 'item__sku', sku));
@@ -37,5 +38,23 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
+
+const fetchProductsData = async () => {
+  const data = await fetchProducts('computador');
+  console.log(data.results);
+  const { results } = data;
+  results.forEach((element) => {
+    const acessItems = document.querySelector('.items');
+    const obj = {
+      sku: element.id,
+      name: element.title,
+      image: element.thumbnail,
+    };
+    const itemsChild = createProductItemElement(obj);
+    acessItems.appendChild(itemsChild);
+  });
+};
+
+fetchProductsData();
 
 window.onload = () => { };
