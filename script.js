@@ -22,6 +22,16 @@ const cartItemClickListener = (event) => {
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
+  const carts = document.querySelectorAll('.cart__item');
+  const data = [];
+  carts.forEach((cart) => {
+    const text = cart.textContent;
+    const array = text.split('$');
+    data.push(Number(array[1]));
+  });
+  const result = data.reduce((acc, atual) => acc + atual, 0);
+  const acessPrice = document.querySelector('.total-price');
+  acessPrice.innerHTML = `Total $${parseFloat(result).toFixed(0)}`;
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
@@ -32,6 +42,7 @@ const fetchItemData = async (idItem) => {
   const itens = getSkuFromProductItem(idItem);
   const { id: sku, title: name, price: salePrice } = await fetchItem(itens);
   const addItemInCart = createCartItemElement({ sku, name, salePrice });
+  localStorage.setItem('cartItems', JSON.stringify(buttonAcess.innerHTML));
   buttonAcess.appendChild(addItemInCart);
 };
 
@@ -47,6 +58,7 @@ const createProductItemElement = ({ sku, name, image }) => {
   section.appendChild(createProductImageElement(image));
   const createButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
   createButton.addEventListener('click', () => fetchItemData(section));
+  
   section.appendChild(createButton);
 
   return section;
@@ -69,4 +81,4 @@ const fetchProductsData = async () => {
 
 fetchProductsData();
 
-window.onload = () => { };
+window.onload = () => {};
