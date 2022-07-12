@@ -19,23 +19,22 @@ const cartItemClickListener = (event) => {
   event.target.remove();
 };
 
-const totalProductItems = async () => {
-  const carts = document.querySelectorAll('.cart__item');
+const totalProductItems = () => {
   const data = [];
+  const carts = document.querySelectorAll('.cart__item');
   carts.forEach((cart) => {
     const text = cart.textContent;
     const array = text.split('$');
     data.push(Number(array[1]));
   });
-  const result = await data.reduce((acc, atual) => acc + atual, 0);
+  const result = data.reduce((acc, atual) => acc + atual, 0);
   const acessPrice = document.querySelector('.total-price');
-  acessPrice.innerHTML = `${Math.floor(result)}`;
+  acessPrice.innerHTML = `${result}`;
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  totalProductItems();
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
@@ -48,6 +47,7 @@ const fetchItemData = async (idItem) => {
   const addItemInCart = createCartItemElement({ sku, name, salePrice });
   localStorage.setItem('cartItems', JSON.stringify(buttonAcess.innerHTML));
   buttonAcess.appendChild(addItemInCart);
+  totalProductItems();
 };
 
 fetchItemData();
