@@ -29,7 +29,7 @@ const totalProductItems = async () => {
   });
   const result = await data.reduce((acc, atual) => acc + atual, 0);
   const acessPrice = document.querySelector('.total-price');
-  acessPrice.innerHTML = `Total $${parseFloat(result)}`;
+  acessPrice.innerHTML = `Total $${Math.floor(result)}`;
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
