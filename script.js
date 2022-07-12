@@ -12,21 +12,6 @@ const createCustomElement = (element, className, innerText) => {
   return e;
 };
 
-const createProductItemElement = ({ sku, name, image }) => {
-  const section = document.createElement('section');
-  
-  section.className = 'item';
-
-  section.appendChild(createCustomElement('span', 'item__sku', sku));
-  section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createProductImageElement(image));
-  const createButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
-  createButton.addEventListener('click', () => fetchItemData(section))
-  section.appendChild(createButton)
-
-  return section;
-};
-
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const cartItemClickListener = (event) => {
@@ -42,34 +27,46 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
+const fetchItemData = async (idItem) => {
+  const buttonAcess = document.querySelector('.cart__items');
+  const itens = getSkuFromProductItem(idItem);
+  const { id: sku, title: name, price: salePrice } = await fetchItem(itens);
+  const addItemInCart = createCartItemElement({ sku, name, salePrice });
+  buttonAcess.appendChild(addItemInCart);
+};
+
+fetchItemData();
+
+const createProductItemElement = ({ sku, name, image }) => {
+  const section = document.createElement('section');
+  
+  section.className = 'item';
+
+  section.appendChild(createCustomElement('span', 'item__sku', sku));
+  section.appendChild(createCustomElement('span', 'item__title', name));
+  section.appendChild(createProductImageElement(image));
+  const createButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
+  createButton.addEventListener('click', () => fetchItemData(section));
+  section.appendChild(createButton);
+
+  return section;
+};
+
 const fetchProductsData = async () => {
-  const data = await fetchProducts('computador')
-  const results = data.results
+  const data = await fetchProducts('computador');
+  const { results } = data;
   results.forEach((element) => {
-    const acessItems = document.querySelector('.items')
+    const acessItems = document.querySelector('.items');
     const obj = {
       sku: element.id,
       name: element.title,
       image: element.thumbnail,
-    }
-    const itemsChild = createProductItemElement(obj)
-    acessItems.appendChild(itemsChild)
-  })
-}
+    };
+    const itemsChild = createProductItemElement(obj);
+    acessItems.appendChild(itemsChild);
+  });
+};
 
-fetchProductsData()
-
-
-
-const fetchItemData = async (idItem) => {
-    const buttonAcess = document.querySelector('.cart__items')
-    const itens =  getSkuFromProductItem(idItem)
-    const {id: sku, title: name, price: salePrice} = await fetchItem(itens)
-    const addItemInCart = createCartItemElement({sku, name, salePrice})
-    buttonAcess.appendChild(addItemInCart)
-}
-
-fetchItemData()
+fetchProductsData();
 
 window.onload = () => { };
-
