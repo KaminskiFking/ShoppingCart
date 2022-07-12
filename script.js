@@ -20,7 +20,9 @@ const createProductItemElement = ({ sku, name, image }) => {
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  const createButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
+  createButton.addEventListener('click', () => fetchItemData(section))
+  section.appendChild(createButton)
 
   return section;
 };
@@ -29,6 +31,7 @@ const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').inn
 
 const cartItemClickListener = (event) => {
   // coloque seu código aqui
+  event.target.remove();
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
@@ -40,21 +43,33 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 };
 
 const fetchProductsData = async () => {
-  const data = await fetchProducts('computador');
-  console.log(data.results);
-  const { results } = data;
+  const data = await fetchProducts('computador')
+  const results = data.results
   results.forEach((element) => {
-    const acessItems = document.querySelector('.items');
+    const acessItems = document.querySelector('.items')
     const obj = {
       sku: element.id,
       name: element.title,
       image: element.thumbnail,
-    };
-    const itemsChild = createProductItemElement(obj);
-    acessItems.appendChild(itemsChild);
-  });
-};
+    }
+    const itemsChild = createProductItemElement(obj)
+    acessItems.appendChild(itemsChild)
+  })
+}
 
-fetchProductsData();
+fetchProductsData()
+
+
+
+const fetchItemData = async (idItem) => {
+    const buttonAcess = document.querySelector('.cart__items')
+    const itens =  getSkuFromProductItem(idItem)
+    const {id: sku, title: name, price: salePrice} = await fetchItem(itens)
+    const addItemInCart = createCartItemElement({sku, name, salePrice})
+    buttonAcess.appendChild(addItemInCart)
+}
+
+fetchItemData()
 
 window.onload = () => { };
+
