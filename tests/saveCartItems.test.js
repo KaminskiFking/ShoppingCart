@@ -11,6 +11,6 @@ describe('3 - Teste a função saveCartItems', () => {
   })
   it('Ao executar saveCartItems com argumento, o metodo é chamado com dois parametros', () =>{
     saveCartItems('<ol><li>Item</li></ol>');
-    expect(localStorage.setItem).toBeCalledWith('cartItems', 'saveCartItems')
+    expect(localStorage.setItem).toHaveBeenCalledWith('cartItems', 'saveCartItems')
   })
 });
