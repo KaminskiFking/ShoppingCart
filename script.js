@@ -33,7 +33,7 @@ const totalProductItems = () => {
   });
   const result = data.reduce((acc, atual) => acc + atual, 0);
   const acessPrice = document.querySelector('.total-price');
-  acessPrice.innerHTML = Math.round(result * 100) / 100;
+  acessPrice.innerHTML = result;
   saveCartItems(SAVE_QUERY.innerHTML);
 };
 
