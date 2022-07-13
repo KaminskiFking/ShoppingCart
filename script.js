@@ -99,7 +99,7 @@ const recovery = () => {
 const eventClickClear = () => {
     SAVE_QUERY.innerHTML = '';
     document.querySelector('.total-price').innerHTML = '';
-    saveCartItems('');
+    saveCartItems(SAVE_QUERY.innerHTML)
 };
 
 const buttonClickClear = () => {
