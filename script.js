@@ -1,4 +1,6 @@
 const SAVE_QUERY = document.querySelector('.cart__items');
+const buttonClear = document.querySelector('.empty-cart');
+const cartItemEach = document.querySelectorAll('.cart__item');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -91,12 +93,20 @@ const fetchProductsData = async () => {
 
 const recovery = () => {
  document.querySelector('.cart__items').innerHTML = getSavedCartItems();
- const cartItemEach = document.querySelectorAll('.cart__item');
  cartItemEach.forEach((element) => element.addEventListener('click', cartItemClickListener));
+};
+
+const eventClickClear = () => {
+    SAVE_QUERY.removeChild(cartItemEach);
+};
+
+const buttonClickClear = () => {
+    buttonClear.addEventListener('click', eventClickClear);
 };
 
 window.onload = () => { 
 fetchProductsData();
 fetchItemData();
 recovery();
+buttonClickClear();
 };
