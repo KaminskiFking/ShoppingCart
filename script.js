@@ -17,12 +17,6 @@ const createCustomElement = (element, className, innerText) => {
 
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
-const cartItemClickListener = (event) => {
-  // coloque seu código aqui
-  event.target.remove();
-  saveCartItems(SAVE_QUERY.innerHTML);
-};
-
 const totalProductItems = () => {
   const data = [];
   const carts = document.querySelectorAll('.cart__item');
@@ -34,6 +28,13 @@ const totalProductItems = () => {
   const result = data.reduce((acc, atual) => acc + atual, 0);
   const acessPrice = document.querySelector('.total-price');
   acessPrice.innerHTML = result;
+  saveCartItems(SAVE_QUERY.innerHTML);
+};
+
+const cartItemClickListener = (event) => {
+  // coloque seu código aqui
+  event.target.remove();
+  totalProductItems();
   saveCartItems(SAVE_QUERY.innerHTML);
 };
 
