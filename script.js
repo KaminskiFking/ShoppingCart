@@ -40,13 +40,26 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
   return li;
 };
 
+const cartSaveStorage = (param) => {
+   const saveLocal = localStorage.getItem('cartItems');
+  if (saveLocal) {
+    const jsonParse = JSON.parse(saveLocal);
+    jsonParse.push(param);
+    localStorage.setItem('cartItems', JSON.stringify(jsonParse));
+  } else {
+    const arrStorage = [param];
+    localStorage.setItem('cartItems', JSON.stringify(arrStorage));
+  }
+};
+
 const fetchItemData = async (idItem) => {
-  const buttonAcess = document.querySelector('.cart__items');
+  const buttonAcess = document.querySelector('.cart__items');  
   const itens = getSkuFromProductItem(idItem);
   const { id: sku, title: name, price: salePrice } = await fetchItem(itens);
-  const addItemInCart = createCartItemElement({ sku, name, salePrice });
-  localStorage.setItem('cartItems', JSON.stringify(buttonAcess.innerHTML));
+  const objectLocalStorage = { sku, name, salePrice };
+  const addItemInCart = createCartItemElement(objectLocalStorage);
   buttonAcess.appendChild(addItemInCart);
+  cartSaveStorage(objectLocalStorage);
   totalProductItems();
 };
 
@@ -62,7 +75,6 @@ const createProductItemElement = ({ sku, name, image }) => {
   section.appendChild(createProductImageElement(image));
   const createButton = createCustomElement('button', 'item__add', 'Adicionar ao carrinho!');
   createButton.addEventListener('click', () => fetchItemData(section));
-  
   section.appendChild(createButton);
 
   return section;
@@ -85,4 +97,12 @@ const fetchProductsData = async () => {
 
 fetchProductsData();
 
-window.onload = () => {};
+window.onload = () => {
+ const index = JSON.parse(localStorage.getItem('cartItems'));
+console.log(index);
+index.forEach((element) => {
+  const buttonAcess = document.querySelector('.cart__items'); 
+  const addItemInCart = createCartItemElement(element);
+  buttonAcess.appendChild(addItemInCart);
+});
+};
