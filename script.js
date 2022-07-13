@@ -97,7 +97,9 @@ const recovery = () => {
 };
 
 const eventClickClear = () => {
-    SAVE_QUERY.removeChild(cartItemEach);
+    SAVE_QUERY.innerHTML = '';
+    document.querySelector('.total-price').innerHTML = '';
+    saveCartItems('');
 };
 
 const buttonClickClear = () => {
