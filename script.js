@@ -91,8 +91,8 @@ const fetchProductsData = async () => {
 
 const recovery = () => {
  document.querySelector('.cart__items').innerHTML = getSavedCartItems();
- const variavelCart = document.querySelectorAll('.cart__item');
- variavelCart.forEach((element) => element.addEventListener('click', cartItemClickListener));
+ const cartItemEach = document.querySelectorAll('.cart__item');
+ cartItemEach.forEach((element) => element.addEventListener('click', cartItemClickListener));
 };
 
 window.onload = () => { 
