@@ -1,6 +1,6 @@
 const SAVE_QUERY = document.querySelector('.cart__items');
 const buttonClear = document.querySelector('.empty-cart');
-const loadingApi = document.querySelector('.loading')
+const loadingApi = document.querySelector('.loading');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -49,10 +49,10 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 };
 
 const fetchItemData = async (idItem) => { 
-  loadingApi.innerText = 'carregando...'
+  loadingApi.innerText = 'carregando...';
   const itens = getSkuFromProductItem(idItem);
   const { id: sku, title: name, price: salePrice } = await fetchItem(itens);
-  loadingApi.remove()
+  loadingApi.remove();
   const objectLocalStorage = { sku, name, salePrice };
   const addItemInCart = createCartItemElement(objectLocalStorage);
   SAVE_QUERY.appendChild(addItemInCart);
@@ -76,9 +76,9 @@ const createProductItemElement = ({ sku, name, image }) => {
 };
 
 const fetchProductsData = async () => {
-  loadingApi.innerText = 'carregando...'
+  loadingApi.innerText = 'carregando...';
   const data = await fetchProducts('computador');
-  loadingApi.remove()
+  loadingApi.remove();
   const { results } = data;
   results.forEach((element) => {
     const acessItems = document.querySelector('.items');
@@ -89,7 +89,6 @@ const fetchProductsData = async () => {
     };
     const itemsChild = createProductItemElement(obj);
     acessItems.appendChild(itemsChild);
-    
   });
 };
 
